@@ -10,6 +10,4 @@ spring:
       server:
         native:
           search-locations:
-#          - file:///Users/elena/Desktop/MSA/spring-cloud-msa-labs-v1/backend/config-repo
-#          - ./backend/config-repo
           - file:///${user.dir}/backend/config-repo
