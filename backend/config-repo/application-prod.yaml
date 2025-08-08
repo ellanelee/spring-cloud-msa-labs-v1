@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+
+    logging:
+      level:
+        root: WARN
+        com.sesac: INFO
+
+    info: #custom field추가설정
+      environment: "Production"
+      debug: true
