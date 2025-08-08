@@ -9,5 +9,5 @@ spring:
 user:
   service:
     name: "User Service"
-    version: "1.0"
+    version: "2.0"
     description: "사용자 정보를 관리하는 마이크로 서비스"
