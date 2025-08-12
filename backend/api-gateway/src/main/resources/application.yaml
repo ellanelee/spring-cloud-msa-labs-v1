@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: default
+    active: dev
   config:
     import: "configserver:http://localhost:8888"
   application:
