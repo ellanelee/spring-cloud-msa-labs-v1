@@ -6,6 +6,7 @@ import com.sesac.orderservice.client.dto.ProductDto;
 import com.sesac.orderservice.client.dto.UserDto;
 import com.sesac.orderservice.dto.OrderRequestDto;
 import com.sesac.orderservice.entity.Order;
+import com.sesac.orderservice.facade.UserServiceFacade;
 import com.sesac.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class OrderService {
-  public final OrderRepository orderRepository;
-  private final UserServiceClient userServiceClient;
+  private final OrderRepository orderRepository;
   private final ProductServiceClient productServiceClient;
+  private final UserServiceFacade userServiceFacade;
 
   public Order findById(Long id) {
       return orderRepository.findById(id).orElseThrow(
@@ -31,7 +32,7 @@ public class OrderService {
     @Transactional
     public Order createOrder(OrderRequestDto request) {
 
-        UserDto user = userServiceClient.getUserById(request.getUserId());
+        UserDto user = userServiceFacade.getUserById(request.getUserId());
         if (user == null) throw new RuntimeException("User not found");
 
         ProductDto product = productServiceClient.getProductById(request.getProductId());

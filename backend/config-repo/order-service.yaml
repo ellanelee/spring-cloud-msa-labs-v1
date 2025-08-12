@@ -5,3 +5,27 @@ spring:
     name: order-service
   datasource:
     url: jdbc:mysql://localhost:3307/order_service_db
+
+# User Service 호출에 대한 회복성  패턴
+resilience4j:
+  circuitbreaker:
+    instances:
+      user-service: # @CircuitBreaker(name = "user-service"..) 를 의미
+        sliding-window-type: count-based # user서비스를 order서비스에서 호출할 때, 호출 횟수를 카운트
+        sliding-window-size: 3
+        minimum-number-of-calls: 3 # 최소 호출 횟수
+        failure-rate-threshold: 50 # 50% 실패 시 Circuit Open
+        permitted-number-of-calls-in-half-open-state: 2 # half-open일 때 몇번 요청할지
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, circuitbreakers, circuitbreakerevents
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
