@@ -18,12 +18,22 @@ services:
       - --collation-server=utf8mb4_unicode_ci
       - --skip-character-set-client-handshake
     restart: always
-
   zipkin:
     image: openzipkin/zipkin:latest
     container_name: msa-zipkin
     ports:
       - "9411:9411"
+    networks:
+      - msa-network
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: msa-rabbitmq
+    ports:
+      - "5672:5672" #AMQP 포트 (메시징 기반 표준 프로토콜 , 실제 통신)
+      - "15672:15672" # UI포트 (조회용 )
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
     networks:
       - msa-network
 

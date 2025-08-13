@@ -35,3 +35,13 @@ logging:
     io.micrometer.tracing: DEBUG
     org.springframework.web: DEBUG
 
+order:
+  event:
+    exchange: order.exchange
+    queue:
+      notification: order.notification.queue
+      inventory: order.inventory.queue
+    routing-key:
+      notification: order.notification
+      inventory: order.inventory
+
