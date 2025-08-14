@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableRabbit
 public class RabbitConfig {
+
     @Value("${order.event.exchange}")
     private String exchange;
 
@@ -26,6 +27,15 @@ public class RabbitConfig {
     @Value("${order.event.queue.inventory-failed}")
     private String inventoryFailedQueue;
 
+    @Value("${order.event.queue.payment-completed}")
+    private String paymentCompletedQueue;
+
+    @Value("${order.event.queue.payment-failed}")
+    private String paymentFailedQueue;
+
+    @Value("${order.event.queue.inventory-restore}")
+    private String inventoryRestoreQueue;
+
     @Value("${order.event.routing-key.notification}")
     private String notificationRoutingKey;
 
@@ -37,6 +47,15 @@ public class RabbitConfig {
 
     @Value("${order.event.routing-key.inventory-failed}")
     private String inventoryFailedRoutingKey;
+
+    @Value("${order.event.routing-key.payment-completed}")
+    private String paymentCompletedRoutingKey;
+
+    @Value("${order.event.routing-key.payment-failed}")
+    private String paymentFailedRoutingKey;
+
+    @Value("${order.event.routing-key.inventory-restore}")
+    private String inventoryRestoreRoutingKey;
 
     // Exchange 정의
     @Bean
@@ -56,14 +75,19 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Queue payementRequestQueue() {
-        return QueueBuilder.durable(paymentRequestQueue).build();
-    }
+    public Queue paymentRequestQueue() { return QueueBuilder.durable(paymentRequestQueue).build(); }
 
     @Bean
-    public Queue inventoryFailedQueue() {
-        return QueueBuilder.durable(inventoryFailedQueue).build();
-    }
+    public Queue inventoryFailedQueue() { return QueueBuilder.durable(inventoryFailedQueue).build(); }
+
+    @Bean
+    public Queue paymentCompletedQueue() { return QueueBuilder.durable(paymentCompletedQueue).build(); }
+
+    @Bean
+    public Queue paymentFailedQueue() { return QueueBuilder.durable(paymentFailedQueue).build(); }
+
+    @Bean
+    public Queue inventoryRestoreQueue() { return QueueBuilder.durable(inventoryRestoreQueue).build(); }
 
     // Binding 정의
     @Bean
@@ -74,13 +98,6 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Binding paymentRequestBinding() {
-        return BindingBuilder.bind(payementRequestQueue())
-                .to(orderExchange())
-                .with(paymentRequestRoutingKey);
-    }
-
-    @Bean
     public Binding inventoryBinding() {
         return BindingBuilder.bind(inventoryQueue())
                 .to(orderExchange())
@@ -88,10 +105,38 @@ public class RabbitConfig {
     }
 
     @Bean
+    public Binding paymentRequestBinding() {
+        return BindingBuilder.bind(paymentRequestQueue())
+                .to(orderExchange())
+                .with(paymentRequestRoutingKey);
+    }
+
+    @Bean
     public Binding inventoryFailedBinding() {
-        return BindingBuilder.bind(payementRequestQueue())
+        return BindingBuilder.bind(inventoryFailedQueue())
                 .to(orderExchange())
                 .with(inventoryFailedRoutingKey);
+    }
+
+    @Bean
+    public Binding paymentCompletedBinding() {
+        return BindingBuilder.bind(paymentCompletedQueue())
+                .to(orderExchange())
+                .with(paymentCompletedRoutingKey);
+    }
+
+    @Bean
+    public Binding paymentFailedBinding() {
+        return BindingBuilder.bind(paymentFailedQueue())
+                .to(orderExchange())
+                .with(paymentFailedRoutingKey);
+    }
+
+    @Bean
+    public Binding inventoryRestoreBinding() {
+        return BindingBuilder.bind(inventoryRestoreQueue())
+                .to(orderExchange())
+                .with(inventoryRestoreRoutingKey);
     }
 
     // JSON 메시지 컨버터 추가
@@ -99,5 +144,4 @@ public class RabbitConfig {
     public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
-
 }

@@ -17,13 +17,13 @@ public class ProductSagaHandler {
     //Queue를 바라보는 Listener설정
     @RabbitListener(queues ="${order.event.queue.inventory}")
     public void handleOrderEvent(OrderCreatedEvent event) {
-     log.info("주문 생성 Event수신 - orderId {}", event.getOrderId());
+     log.info("주문 생성 Event수신 - orderId : {}", event.getOrderId());
 
      try {
          productService.decreaseStock(event.getProductId(), event.getQuantity());
 
          // 결재 요청 이벤트 발행
-         PaymentReqeustEvent paymentReqeustEvent = new PaymentReqeustEvent(
+         PaymentRequestEvent paymentReqeustEvent = new PaymentRequestEvent(
                  event.getOrderId(),
                  event.getUserId(),
                  event.getProductId(),

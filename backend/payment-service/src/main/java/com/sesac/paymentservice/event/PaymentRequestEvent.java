@@ -1,18 +1,24 @@
-package com.sesac.productservice.event;
+package com.sesac.paymentservice.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InventoryFailedEvent {
+public class PaymentRequestEvent implements Serializable {
+
     private static final long serialVersionUID = 1L;  //직렬화에 사용할 버전 정보 (스트림 처리)
 
+    private Long userId;
     private Long orderId;
     private Long productId;
     private Integer quantity;
-    private String reason;
+    private BigDecimal totalAmount;
+
+
 }

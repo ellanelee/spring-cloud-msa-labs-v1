@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentReqeustEvent implements Serializable {
+public class PaymentRequestEvent implements Serializable {
 
     private static final long serialVersionUID = 1L;  //직렬화에 사용할 버전 정보 (스트림 처리)
 

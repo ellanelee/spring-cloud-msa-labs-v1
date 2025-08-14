@@ -1,4 +1,4 @@
-package com.sesac.productservice.config;
+package com.sesac.paymentservice.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
