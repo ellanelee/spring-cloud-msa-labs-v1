@@ -46,6 +46,8 @@ public class ProductSagaHandler {
                 event.getQuantity(),
                 "재고부족"
         );
+
+        productSagaPublisher.publishInventoryFailed(inventoryFailedEvent);
      }
     }
 }
